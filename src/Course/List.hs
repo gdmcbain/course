@@ -75,8 +75,9 @@ headOr ::
   a
   -> List a
   -> a
-headOr =
-  error "todo: Course.List#headOr"
+headOr x Nil = x -- gdmcbain jeudi 10 septembre 2015, 22:01:28 (UTC+1000)
+headOr _ (h :. _) = h
+--  error "todo: Course.List#headOr"
 
 -- | The product of the elements of a list.
 --
@@ -88,8 +89,9 @@ headOr =
 product ::
   List Int
   -> Int
-product =
-  error "todo: Course.List#product"
+product l = -- gdmcbain jeudi 10 septembre 2015, 22:03:38 (UTC+1000)
+-- error "todo: Course.List#product"
+  foldRight (*) 1 l
 
 -- | Sum the elements of the list.
 --
@@ -103,8 +105,9 @@ product =
 sum ::
   List Int
   -> Int
-sum =
-  error "todo: Course.List#sum"
+sum l =
+--  error "todo: Course.List#sum"
+  foldRight (+) 0 l             -- gdmcbain 2015-09-10T2204
 
 -- | Return the length of the list.
 --
@@ -115,8 +118,13 @@ sum =
 length ::
   List a
   -> Int
-length =
-  error "todo: Course.List#length"
+-- length =
+--   error "todo: Course.List#length"
+
+-- length Nil = 0                  -- gdmcbain 2015-09-10T2209
+-- length (_ :. l) = 1 + (length l)
+
+length l = foldRight (\ _ b -> 1 + b) 0 l -- gdmcbain 2015-09-10T2214
 
 -- | Map the given function on each element of the list.
 --
@@ -130,8 +138,9 @@ map ::
   (a -> b)
   -> List a
   -> List b
-map =
-  error "todo: Course.List#map"
+map f l =
+--  error "todo: Course.List#map"
+  foldRight (\ a b -> (f a :. b)) Nil l -- gdmcbain 2015-09-10T2217
 
 -- | Return elements satisfying the given predicate.
 --
