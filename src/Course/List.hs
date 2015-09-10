@@ -167,8 +167,8 @@ filter p l = -- gdmcbain 2015-09-10T2238
   List a
   -> List a
   -> List a
-(++) =
-  error "todo: Course.List#(++)"
+(++) l0 l1 = foldRight (:.) l1 l0 -- gdmcbain 2015-09-11T0855
+--  error "todo: Course.List#(++)"
 
 infixr 5 ++
 
