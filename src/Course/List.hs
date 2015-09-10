@@ -147,8 +147,9 @@ filter ::
   (a -> Bool)
   -> List a
   -> List a
-filter =
-  error "todo: Course.List#filter"
+filter p l = -- gdmcbain 2015-09-10T2238
+  foldRight (\ a b -> if p a then (a :. b) else b) Nil l
+--  error "todo: Course.List#filter"
 
 -- | Append two lists to a new list.
 --
