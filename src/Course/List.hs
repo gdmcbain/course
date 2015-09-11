@@ -185,8 +185,8 @@ infixr 5 ++
 flatten ::
   List (List a)
   -> List a
-flatten =
-  error "todo: Course.List#flatten"
+flatten = foldRight (++) Nil    -- gdmcbain 2015-09-11T1051
+--  error "todo: Course.List#flatten"
 
 -- | Map a function then flatten to a list.
 --
