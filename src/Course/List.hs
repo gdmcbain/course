@@ -213,8 +213,8 @@ flatMap a b = flatten (map a b) -- gdmcbain 2015-09-14T1315
 flattenAgain ::
   List (List a)
   -> List a
-flattenAgain =
-  error "todo: Course.List#flattenAgain"
+flattenAgain = flatMap id       -- gdmcbain 2015-09-14T1323
+--  error "todo: Course.List#flattenAgain"
 
 -- | Convert a list of optional values to an optional list of values.
 --
