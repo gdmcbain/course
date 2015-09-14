@@ -286,8 +286,9 @@ find p (a :. as)
 lengthGT4 ::
   List a
   -> Bool
-lengthGT4 =
-  error "todo: Course.List#lengthGT4"
+lengthGT4 (_ :. _ :. _ :. _ :. _) = True -- gdmcbain 2015-09-14T2044
+lengthGT4 _ = False
+--  error "todo: Course.List#lengthGT4"
 
 -- | Reverse a list.
 --
