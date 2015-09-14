@@ -89,7 +89,7 @@ headOr _ (h :. _) = h
 product ::
   List Int
   -> Int
-product l = foldRight (*) 1 l -- gdmcbain 2015-09-10T2203
+product = foldRight (*) 1 -- gdmcbain 2015-09-10T2203
 
 -- | Sum the elements of the list.
 --
@@ -103,7 +103,7 @@ product l = foldRight (*) 1 l -- gdmcbain 2015-09-10T2203
 sum ::
   List Int
   -> Int
-sum l = foldRight (+) 0 l       -- gdmcbain 2015-09-10T2204
+sum = foldRight (+) 0           -- gdmcbain 2015-09-10T2204
 
 -- | Return the length of the list.
 --
@@ -117,7 +117,7 @@ length ::
 -- length Nil = 0                  -- gdmcbain 2015-09-10T2209
 -- length (_ :. l) = 1 + (length l)
 
-length l = foldRight (\ _ b -> 1 + b) 0 l -- gdmcbain 2015-09-10T2214
+length = foldRight (\ _ b -> 1 + b) 0 -- gdmcbain 2015-09-10T2214
 
 -- | Map the given function on each element of the list.
 --
@@ -131,7 +131,7 @@ map ::
   (a -> b)
   -> List a
   -> List b
-map f l = foldRight (\ a b -> (f a :. b)) Nil l -- gdmcbain 2015-09-10T2217
+map f = foldRight (\ a b -> (f a :. b)) Nil -- gdmcbain 2015-09-10T2217
 
 -- | Return elements satisfying the given predicate.
 --
@@ -147,8 +147,8 @@ filter ::
   (a -> Bool)
   -> List a
   -> List a
-filter p l = -- gdmcbain 2015-09-10T2238
-  foldRight (\ a b -> if p a then (a :. b) else b) Nil l
+filter p = -- gdmcbain 2015-09-10T2238
+  foldRight (\ a b -> if p a then (a :. b) else b) Nil
 --  error "todo: Course.List#filter"
 
 -- | Append two lists to a new list.
@@ -167,7 +167,8 @@ filter p l = -- gdmcbain 2015-09-10T2238
   List a
   -> List a
   -> List a
-(++) l0 l1 = foldRight (:.) l1 l0 -- gdmcbain 2015-09-11T0855
+-- (++) l0 l1 = foldRight (:.) l1 l0 -- gdmcbain 2015-09-11T0855
+(++) = flip (foldRight (:.)) -- gdmcbain 2015-09-14T1310
 --  error "todo: Course.List#(++)"
 
 infixr 5 ++
