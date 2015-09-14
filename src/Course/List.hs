@@ -203,8 +203,8 @@ flatMap ::
   (a -> List b)
   -> List a
   -> List b
-flatMap =
-  error "todo: Course.List#flatMap"
+flatMap a b = flatten (map a b) -- gdmcbain 2015-09-14T1315
+--  error "todo: Course.List#flatMap"
 
 -- | Flatten a list of lists to a list (again).
 -- HOWEVER, this time use the /flatMap/ function that you just wrote.
