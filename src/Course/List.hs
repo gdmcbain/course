@@ -264,7 +264,7 @@ find ::
   (a -> Bool)
   -> List a
   -> Optional a
-find p Nil = Empty              -- gdmcbain 2015-09-14T2037
+find _ Nil = Empty              -- gdmcbain 2015-09-14T2037
 find p (a :. as)
   | p a       = Full a
   | otherwise = find p as
