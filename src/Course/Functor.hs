@@ -55,8 +55,7 @@ instance Functor List where
     (a -> b)
     -> List a
     -> List b
-  (<$>) =
-    error "todo: Course.Functor (<$>)#instance List"
+  (<$>) = map                   -- gdmcbain 2015-09-15T1833
 
 -- | Maps a function on the Optional functor.
 --
