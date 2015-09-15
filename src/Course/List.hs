@@ -206,7 +206,8 @@ flatMap ::
   (a -> List b)
   -> List a
   -> List b
-flatMap a b = flatten (map a b) -- gdmcbain 2015-09-14T1315
+-- flatMap a b = flatten (map a b) -- gdmcbain 2015-09-14T1315
+flatMap = (((.) flatten) . map) -- gdmcbain 2015-09-15T1306
 --  error "todo: Course.List#flatMap"
 
 -- | Flatten a list of lists to a list (again).
@@ -259,7 +260,7 @@ e.g. #1 is like return type and is the default, probably Full Nil
 
  -}
 
--- seqOptional = foldLeft (\oas oa -> if (Full Nil)
+-- seqOptional   = foldLeft (\oas oa -> if (Full Nil)
 seqOptional = 
   error "todo: Course.List#seqOptional"
 
