@@ -80,8 +80,9 @@ instance Functor ((->) t) where
     (a -> b)
     -> ((->) t a)
     -> ((->) t b)
-  (<$>) =
-    error "todo: Course.Functor (<$>)#((->) t)"
+  (<$>) = (.)                   -- gdmcbain 2015-09-15T1902
+
+-- http://bartoszmilewski.com/2015/01/20/functors (gdmcbain)
 
 -- | Anonymous map. Maps a constant value on a functor.
 --
@@ -116,8 +117,8 @@ void ::
   Functor f =>
   f a
   -> f ()
-void =
-  error "todo: Course.Functor#void"
+void = ((<$) ())                -- gdmcbain 2015-09-15T1846
+
 
 -----------------------
 -- SUPPORT LIBRARIES --
