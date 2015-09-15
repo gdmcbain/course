@@ -117,7 +117,10 @@ length ::
 -- length Nil = 0                  -- gdmcbain 2015-09-10T2209
 -- length (_ :. l) = 1 + (length l)
 
-length = foldRight (\ _ b -> 1 + b) 0 -- gdmcbain 2015-09-10T2214
+-- length = foldRight (\ _ b -> 1 + b) 0 -- gdmcbain 2015-09-10T2214
+-- length = foldLeft (\ b _ -> 1 + b) 0 -- gdmcbain 2015-09-15T1219
+-- length = foldLeft (\b _ -> succ b) 0 -- gdmcbain 2015-09-15T1233
+length = foldLeft (const . succ) 0 -- gdmcbain 2015-09-15T1238
 
 -- | Map the given function on each element of the list.
 --
@@ -241,7 +244,23 @@ flattenAgain = flatMap id       -- gdmcbain 2015-09-14T1323
 seqOptional ::
   List (Optional a)
   -> Optional (List a)
-seqOptional =
+
+{- foldLeft :: (s -> t -> s) -> s -> List t -> s
+
+so if s :: Optional (List a) and t :: Optional a ?  Then the arguments are:
+
+0: (Optional (List a) -> Optional a -> Optional (List a)) 
+
+1: Optional (List a)
+
+2: List (Optional a)
+
+e.g. #1 is like return type and is the default, probably Full Nil
+
+ -}
+
+-- seqOptional = foldLeft (\oas oa -> if (Full Nil)
+seqOptional = 
   error "todo: Course.List#seqOptional"
 
 -- | Find the first element in the list matching the predicate.
