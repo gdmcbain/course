@@ -10,6 +10,29 @@ import Course.Optional
 import Course.List
 import qualified Prelude as P
 
+{- Some notes on type-classes, from T. Morris 2015-09-16T0922:
+
+  Eq a                          -- :info Eq
+
+    (==) :: a -> a ->  Bool
+    (/=) :: a -> a -> Bool
+
+  Ord a
+
+    compare :: a -> a -> GHC.Types.Ordering
+    (<) :: a -> a -> Bool, &c.
+
+A type-class is defined by Class, then Instance makes a data-type
+belong to a type-class, or this can be done using "deriving" in simple
+cases.  Examples of type-classes are Eq, Ord, & Show.
+
+Designing type-classes is difficult.  For example, the types in Ord
+should be strict subset of Eq; the operators on Eq should be a subset
+of those on Ord.  The former inclusion is given by the _constraint_
+"class Eq a => Ord a where"; the latter is implied by the former.
+
+-}
+
 -- | All instances of the `Functor` type-class must satisfy two laws. These laws
 -- are not checked by the compiler. These laws are given as:
 --
