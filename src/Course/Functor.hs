@@ -64,7 +64,7 @@ instance Functor Id where
     (a -> b)
     -> Id a
     -> Id b
-  f <$> Id a = Id (f a)         -- gdmcbain 2015-09-15T1832
+  f <$> Id = Id $ f             -- gdmcbain 2015-09-15T1832
 
 -- | Maps a function on the List functor.
 --
