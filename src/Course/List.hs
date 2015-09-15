@@ -151,8 +151,11 @@ filter ::
   (a -> Bool)
   -> List a
   -> List a
-filter p = -- gdmcbain 2015-09-10T2238
-  foldRight (\ a b -> if p a then (a :. b) else b) Nil
+filter p =
+--  foldRight (\ a b -> if p a then (a :. b) else b) Nil -- gdmcbain 2015-09-10T2238
+  foldRight (\a -> if p a then ((:.) a) else id) Nil -- 2015-09-15T1425
+
+
 --  error "todo: Course.List#filter"
 
 -- | Append two lists to a new list.
