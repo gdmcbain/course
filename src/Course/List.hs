@@ -134,7 +134,8 @@ map ::
   (a -> b)
   -> List a
   -> List b
-map f = foldRight (\ a b -> (f a :. b)) Nil -- gdmcbain 2015-09-10T2217
+-- map f = foldRight (\ a b -> (f a :. b)) Nil -- gdmcbain 2015-09-10T2217
+map f = foldRight ((:.) . f) Nil -- gdmcbain 2015-09-15T1345
 
 -- | Return elements satisfying the given predicate.
 --
