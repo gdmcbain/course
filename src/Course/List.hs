@@ -266,8 +266,17 @@ e.g. #1 is like return type and is the default, probably Full Nil
  -}
 
 -- seqOptional   = foldLeft (\oas oa -> if (Full Nil)
-seqOptional = 
-  error "todo: Course.List#seqOptional"
+--seqOptional = 
+--  error "todo: Course.List#seqOptional"
+
+seqOptional Nil = Full Nil      -- 2015-09-15T1536
+seqOptional (h:.t) =            -- 2015-09-15T1555
+  case h of                     -- mimics foldRight
+    Empty -> Empty
+    Full a -> case seqOptional t of
+                Empty -> Empty
+                Full b -> Full (a :. b)
+
 
 -- | Find the first element in the list matching the predicate.
 --
@@ -344,7 +353,7 @@ produce ::
   (a -> a)
   -> a
   -> List a
-produce f a = (a :. produce f (f a))
+produce f a = a :. produce f (f a) -- gdmcbain 2015-09-14T2106
 --  error "todo: Course.List#produce"
 
 -- | Do anything other than reverse a list.
