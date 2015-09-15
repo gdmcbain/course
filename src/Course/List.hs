@@ -75,9 +75,9 @@ headOr ::
   a
   -> List a
   -> a
-headOr x Nil = x -- gdmcbain jeudi 10 septembre 2015, 22:01:28 (UTC+1000)
-headOr _ (h :. _) = h
---  error "todo: Course.List#headOr"
+-- headOr x Nil = x -- gdmcbain jeudi 10 septembre 2015, 22:01:28 (UTC+1000)
+-- headOr _ (h :. _) = h
+headOr = foldRight const        -- 2015-09-16T0909
 
 -- | The product of the elements of a list.
 --
