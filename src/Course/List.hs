@@ -211,7 +211,8 @@ flatMap ::
   -> List a
   -> List b
 -- flatMap a b = flatten (map a b) -- gdmcbain 2015-09-14T1315
-flatMap = (((.) flatten) . map) -- gdmcbain 2015-09-15T1306
+-- flatMap = (((.) flatten) . map) -- gdmcbain 2015-09-15T1306
+flatMap f = flatten .  map f -- gdmcbain 2015-09-15T1511
 --  error "todo: Course.List#flatMap"
 
 -- | Flatten a list of lists to a list (again).
