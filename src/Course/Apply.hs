@@ -88,8 +88,7 @@ instance Apply ((->) t) where
     ((->) t (a -> b))
     -> ((->) t a)
     -> ((->) t b)
-  (<*>) =
-    error "todo: Course.Apply (<*>)#instance ((->) t)"
+  (f <*> g) x = f x (g x)     -- gdmcbain 2015-09-16T1051
 
 -- | Apply a binary function in the environment.
 --
