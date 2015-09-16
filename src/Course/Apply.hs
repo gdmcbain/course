@@ -35,8 +35,7 @@ instance Apply Id where
     Id (a -> b)
     -> Id a
     -> Id b
-  (<*>) =
-    error "todo: Course.Apply (<*>)#instance Id"
+  (<*>) (Id f) (Id x) = Id (f x)  -- gdmcbain 2015-09-16T1000
 
 -- | Implement @Apply@ instance for @List@.
 --
@@ -47,8 +46,9 @@ instance Apply List where
     List (a -> b)
     -> List a
     -> List b
-  (<*>) =
-    error "todo: Course.Apply (<*>)#instance List"
+  -- (<*>) Nil _ = Nil
+  -- (fh :. ft) <*> as = (map fh as) ++ (ft <*> as) -- gdmcbain 2015-09-16T1011
+  (<*>) fs as = foldRight (\f -> (++) (map f as)) Nil fs -- T1016
 
 -- | Implement @Apply@ instance for @Optional@.
 --
@@ -65,8 +65,7 @@ instance Apply Optional where
     Optional (a -> b)
     -> Optional a
     -> Optional b
-  (<*>) =
-    error "todo: Course.Apply (<*>)#instance Optional"
+  (<*>) = applyOptional         -- gdmcbain 2015-09-16T1020
 
 -- | Implement @Apply@ instance for reader.
 --
