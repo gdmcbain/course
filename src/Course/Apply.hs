@@ -49,8 +49,9 @@ instance Apply List where
   -- (<*>) Nil _ = Nil
   -- (fh :. ft) <*> as = (map fh as) ++ (ft <*> as) -- gdmcbain 2015-09-16T1011
 --  (<*>) fs as = foldRight (\f -> (++) (map f as)) Nil fs -- T1016
-  (<*>) fs as = flatMap (flip map as) fs -- T1142
-
+--  (<*>) fs as = flatMap (`map` as) fs -- T1150
+  (<*>) fs as = flatMap (<$> as) fs -- T1303
+ 
 -- | Implement @Apply@ instance for @Optional@.
 --
 -- >>> Full (+8) <*> Full 7
@@ -91,6 +92,9 @@ instance Apply ((->) t) where
     -> ((->) t b)
   (f <*> g) x = f x (g x)     -- gdmcbain 2015-09-16T1051
 
+lift1 :: Apply f => (a -> b) -> (f a -> f b)
+lift1 = (<$>)
+
 -- | Apply a binary function in the environment.
 --
 -- >>> lift2 (+) (Id 7) (Id 8)
@@ -116,14 +120,42 @@ lift2 ::
   -> f a
   -> f b
   -> f c
-lift2 =
-  error "todo: Course.Apply#lift2"
+lift2 f x y = f <$> x <*> y     -- gdmcbain 2015-09-16T1344, from LYAH
+
+{- notes from T. Morris
+
+  lift2 f x y = ...
+
+
+
+
+ -}
+
+-- http://learnyouahaskell.com/functors-applicative-functors-and-monoids#applicative-functors
 
 lift2Id :: (t -> t1 -> a) -> Id t -> Id t1 -> Id a
-lift2Id phi (Id x) (Id y) = Id (phi x y)
+-- lift2Id phi (Id x) (Id y) = Id (phi x y)
+-- lift2Id phi x y = bindId ((<$> y) . phi) x
+lift2Id f (Id x) (Id y) = f <$> (Id x) <*> (Id y)
+--            = (<$>) f (Id x) <*> (Id y)
+--            = Id (f x) <*> (Id y)
+--            = (<*>) Id (f x) (Id y)
+--            = (<*>) (Id (f x)) (Id y)
+--            = Id ((f x) y)
+--            = Id ((f x) y)
+--            = Id (f x y)
 
 lift2List :: (a -> a1 -> b) -> List a -> List a1 -> List b
-lift2List phi as bs = flatMap (\x -> map (phi x) bs) as
+lift2List phi x y = flatMap ((<$> y) . phi) x
+--                = flatMap ((<$> y) . phi) x
+
+lift2Optional :: (a -> a1 -> b) -> Optional a -> Optional a1 -> Optional b
+lift2Optional phi x y = bindOptional ((<$> y) . phi) x
+
+lift2Reader :: (t1 -> t2 -> t) -> (t3 -> t1) -> (t3 -> t2) -> t3 -> t
+lift2Reader f g h as = f (g as) (h as)
+
+-- Hint: lift<n> is like lift<n-1> with <*>
 
 -- | Apply a ternary function in the environment.
 --
@@ -154,8 +186,7 @@ lift3 ::
   -> f b
   -> f c
   -> f d
-lift3 =
-  error "todo: Course.Apply#lift2"
+lift3 f x y z = lift2 f x y <*> z -- gdmcbain 2015-09-16T1423
 
 -- | Apply a quaternary function in the environment.
 --
@@ -187,8 +218,8 @@ lift4 ::
   -> f c
   -> f d
   -> f e
-lift4 =
-  error "todo: Course.Apply#lift4"
+lift4 f x y z a = lift3 f x y z <*> a -- gdmcbain 2015-09-16T1427
+
 
 -- | Sequence, discarding the value of the first argument.
 -- Pronounced, right apply.
