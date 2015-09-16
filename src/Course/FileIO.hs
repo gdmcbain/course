@@ -62,8 +62,21 @@ the contents of c
 -- /Tip:/ use @getArgs@ and @run@
 main ::
   IO ()
-main =
-  error "todo: Course.FileIO#main"
+main = 
+-- getArgs :: IO (List Chars)
+--   (<*>) :: Apply f => f (a          ->  b) -> f   a           -> f  b
+--                      IO (List Chars -> ()) -> IO (List Chars) -> IO ()
+--     (<*> getArgs) :: IO (List Chars -> b) -> IO b
+--                      IO (List Chars -> ())                    -> IO ()
+--   _undefined <*> getArgs       -- _undefined :: IO (List Chars -> ())
+
+--       run :: Chars -> IO ()
+-- (map run) :: List Chars ->  List (IO ())
+-- (readFile <$>) :: List Chars -> List (IO Chars)
+--  void getArgs
+  getArgs >>= \a -> case a of
+                     Nil -> putStrLn "no CLAs"
+                     h:._ -> run h -- 2015-09-17T0958
 
 type FilePath =
   Chars
@@ -72,14 +85,16 @@ type FilePath =
 run ::
   Chars
   -> IO ()
-run =
+run =  --_undefined printFiles
+-- getFiles :: List FilePath -> IO (List (FilePath, Chars))
+-- (_undefined :: (List (FilePath, Chars) -> IO ()) -> Chars -> IO ()) printFiles --
   error "todo: Course.FileIO#run"
 
 getFiles ::
   List FilePath
   -> IO (List (FilePath, Chars))
-getFiles =
-  error "todo: Course.FileIO#getFiles"
+getFiles files =  -- _undefined files
+   error "todo: Course.FileIO#getFiles"
 
 getFile ::
   FilePath
