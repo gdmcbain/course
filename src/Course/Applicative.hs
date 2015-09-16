@@ -56,8 +56,7 @@ instance Applicative Id where
   pure ::
     a
     -> Id a
-  pure =
-    error "todo: Course.Applicative pure#instance Id"
+  pure = Id    -- gdmcbain 2015-09-16T1602
 
 -- | Insert into a List.
 --
@@ -66,8 +65,7 @@ instance Applicative List where
   pure ::
     a
     -> List a
-  pure =
-    error "todo: Course.Applicative pure#instance List"
+  pure = (:. Nil)             -- gdmcbain 2015-09-16T1606
 
 -- | Insert into an Optional.
 --
@@ -76,8 +74,7 @@ instance Applicative Optional where
   pure ::
     a
     -> Optional a
-  pure =
-    error "todo: Course.Applicative pure#instance Optional"
+  pure = Full                   -- gdmcbain 2015-09-16T1604
 
 -- | Insert into a constant function.
 --
@@ -86,8 +83,7 @@ instance Applicative ((->) t) where
   pure ::
     a
     -> ((->) t a)
-  pure =
-    error "todo: Course.Applicative pure#((->) t)"
+  pure = const                  -- gdmcbain 2015-09-16T1605
 
 -- | Sequences a list of structures to a structure of list.
 --
@@ -161,8 +157,8 @@ filtering ::
   (a -> f Bool)
   -> List a
   -> f (List a)
-filtering =
-  error "todo: Course.Applicative#filtering"
+filtering _ Nil = pure Nil      -- gdmcbain 2015-09-16T1608
+filtering f (h:.t) = lift2 (\b x -> if b then h:.x else x) (f h) (filtering f t)
 
 -----------------------
 -- SUPPORT LIBRARIES --
