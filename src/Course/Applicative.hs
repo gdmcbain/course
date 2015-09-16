@@ -46,8 +46,8 @@ class Apply f => Applicative f where
   (a -> b)
   -> f a
   -> f b
-(<$>) =
-  error "todo: Course.Applicative#(<$>)"
+f <$> a = (pure f) <*> a        -- gdmcbain 2015-09-16T1636
+
 
 -- | Insert into Id.
 --
