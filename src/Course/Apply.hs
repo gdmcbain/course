@@ -122,15 +122,6 @@ lift2 ::
   -> f c
 lift2 f x y = f <$> x <*> y     -- gdmcbain 2015-09-16T1344, from LYAH
 
-{- notes from T. Morris
-
-  lift2 f x y = ...
-
-
-
-
- -}
-
 -- http://learnyouahaskell.com/functors-applicative-functors-and-monoids#applicative-functors
 
 lift2Id :: (t -> t1 -> a) -> Id t -> Id t1 -> Id a
