@@ -48,7 +48,8 @@ instance Apply List where
     -> List b
   -- (<*>) Nil _ = Nil
   -- (fh :. ft) <*> as = (map fh as) ++ (ft <*> as) -- gdmcbain 2015-09-16T1011
-  (<*>) fs as = foldRight (\f -> (++) (map f as)) Nil fs -- T1016
+--  (<*>) fs as = foldRight (\f -> (++) (map f as)) Nil fs -- T1016
+  (<*>) fs as = flatMap (flip map as) fs -- T1142
 
 -- | Implement @Apply@ instance for @Optional@.
 --
@@ -117,6 +118,12 @@ lift2 ::
   -> f c
 lift2 =
   error "todo: Course.Apply#lift2"
+
+lift2Id :: (t -> t1 -> a) -> Id t -> Id t1 -> Id a
+lift2Id phi (Id x) (Id y) = Id (phi x y)
+
+lift2List :: (a -> a1 -> b) -> List a -> List a1 -> List b
+lift2List phi as bs = flatMap (\x -> map (phi x) bs) as
 
 -- | Apply a ternary function in the environment.
 --
