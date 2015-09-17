@@ -477,8 +477,10 @@ ageParser = natural -- gdmcbain 2015-09-17T1529
 -- True
 firstNameParser ::
   Parser Chars
-firstNameParser =
-  error "todo: Course.Parser#firstNameParser"
+firstNameParser = -- tmorris 2015-09-17TT1538
+  do u <- upper
+     ls <- list lower
+     pure (u:.ls)
 
 -- | Write a parser for Person.surname.
 --
