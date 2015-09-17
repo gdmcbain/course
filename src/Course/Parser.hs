@@ -420,6 +420,16 @@ sequenceParser ::
   -> Parser (List a)
 sequenceParser = sequence
 
+{-
+  sequenceParser Nil = pure Nil
+  sequenceParser (h:.t) =
+    flbindParser h (\a ->
+    flbindParser (sequence t) (\b ->
+    valueParser (a:.b)))
+-}
+
+{- lift2 (:.) h (sequence t) -}
+
 -- | Return a parser that produces the given number of values off the given parser.
 -- This parser fails if the given parser fails in the attempt to produce the given number of values.
 --
@@ -431,10 +441,11 @@ sequenceParser = sequence
 -- >>> isErrorResult (parse (thisMany 4 upper) "ABcDef")
 -- True
 thisMany ::
+  Applicative p =>
   Int
-  -> Parser a
-  -> Parser (List a)
-thisMany n p = sequenceParser $ replicate n p
+  -> p a
+  -> p (List a)
+thisMany n p = sequence $ replicate n p
 
 -- | Write a parser for Person.age.
 --
@@ -452,8 +463,7 @@ thisMany n p = sequenceParser $ replicate n p
 -- True
 ageParser ::
   Parser Int
-ageParser =
-  error "todo: Course.Parser#ageParser"
+ageParser = natural -- gdmcbain 2015-09-17T1529
 
 -- | Write a parser for Person.firstName.
 -- /First Name: non-empty string that starts with a capital letter and is followed by zero or more lower-case letters/
