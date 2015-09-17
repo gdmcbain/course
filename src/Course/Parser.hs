@@ -391,8 +391,7 @@ lower = satisfy isLower -- gdmcbain 2015-09-17T1508
 -- /Tip:/ Use the @satisfy@ and @Data.Char#isUpper@ functions.
 upper ::
   Parser Char
-upper =
-  error "todo: Course.Parser#upper"
+upper = satisfy isUpper -- gdmcbain 2015-09-17T1509
 
 -- | Return a parser that produces an alpha character but fails if
 --
