@@ -115,9 +115,11 @@ mapParser ::
   (a -> b)
   -> Parser a
   -> Parser b
-mapParser =
-  error "todo: Course.Parser#mapParser"
-
+mapParser f p = P (\input ->    -- gdmcbain 2015-09-17T1323
+                    case parse p input of
+                     ErrorResult pe -> ErrorResult pe
+                     Result residue x -> Result residue (f x))
+                
 -- | This is @mapParser@ with the arguments flipped.
 -- It might be more helpful to use this function if you prefer this argument order.
 flmapParser ::
