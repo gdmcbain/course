@@ -499,7 +499,10 @@ firstNameParser = -- tmorris 2015-09-17TT1538
 surnameParser ::
   Parser Chars
 surnameParser =
-  error "todo: Course.Parser#surnameParser"
+  do u <- upper
+     ls <- thisMany 5 lower
+     t <- list lower
+     pure (u:.(ls ++ t))
 
 -- | Write a parser for Person.smoker.
 --
