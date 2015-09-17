@@ -192,8 +192,7 @@ flbindParser =
   Parser a
   -> Parser b
   -> Parser b
-(>>>) =
-  error "todo: Course.Parser#(>>>)"
+p >>> q = flbindParser p (const q) -- tmorris T1416
 
 -- | Return a parser that tries the first parser for a successful value.
 --
@@ -216,8 +215,10 @@ flbindParser =
   Parser a
   -> Parser a
   -> Parser a
-(|||) =
-  error "todo: Course.Parser#(|||)"
+(P p) ||| (P q) =               -- gdmcbain 2015-09-17T1422
+  P (\input -> case p input of
+                ErrorResult _ -> q input
+                Result i a -> Result i a)
 
 infixl 3 |||
 
