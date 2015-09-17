@@ -296,9 +296,7 @@ satisfy predic =                -- tmorris 2015-09-17T1455
 
 iiif :: x-> x -> Bool -> x
 iiif f _ False = f
-iiif _ t True = t
-  
-                                      
+iiif _ t True = t                                      
 
 -- | Return a parser that produces the given character but fails if
 --
@@ -309,8 +307,7 @@ iiif _ t True = t
 -- /Tip:/ Use the @satisfy@ function.
 is ::
   Char -> Parser Char
-is =
-  error "todo: Course.Parser#is"
+is c = satisfy (== c)           -- tmorris T1502
 
 -- | Return a parser that produces a character between '0' and '9' but fails if
 --
@@ -321,8 +318,7 @@ is =
 -- /Tip:/ Use the @satisfy@ and @Data.Char#isDigit@ functions.
 digit ::
   Parser Char
-digit =
-  error "todo: Course.Parser#digit"
+digit = satisfy isDigit -- gdmcbain 2015-09-17T1503
 
 -- | Return a parser that produces zero or a positive integer but fails if
 --
@@ -346,7 +342,10 @@ digit =
 natural ::
   Parser Int
 natural =
-  error "todo: Course.Parser#natural"
+  list digit >>= \d ->
+  case read d of
+   Empty -> failed
+   Full i -> pure i
 
 --
 -- | Return a parser that produces a space character but fails if
@@ -358,8 +357,7 @@ natural =
 -- /Tip:/ Use the @satisfy@ and @Data.Char#isSpace@ functions.
 space ::
   Parser Char
-space =
-  error "todo: Course.Parser#space"
+space = satisfy isSpace
 
 -- | Return a parser that produces one or more space characters
 -- (consuming until the first non-space) but fails if
