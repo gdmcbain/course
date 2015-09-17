@@ -288,8 +288,17 @@ satisfy ::
   (Char -> Bool)
   -> Parser Char
 satisfy predic =                -- tmorris 2015-09-17T1455
-  character  >>= \c ->
-  if predic c then valueParser c else unexpectedCharParser c
+  {- character  >>= \c ->
+     if predic c then valueParser c else unexpectedCharParser c
+   -}
+  character `flbindParser`
+  lift3 iiif unexpectedCharParser valueParser predic
+
+iiif :: x-> x -> Bool -> x
+iiif f _ False = f
+iiif _ t True = t
+  
+                                      
 
 -- | Return a parser that produces the given character but fails if
 --
