@@ -160,9 +160,10 @@ bindParser ::
   (a -> Parser b)
   -> Parser a
   -> Parser b
---bindParser f (P p) =
-bindParser =
-  error "todo: Course.Parser#bindParser"
+bindParser f (P p) =
+  P (\input -> case p input of
+                ErrorResult e -> ErrorResult e
+                Result res x -> parse (f x) res) -- tmorris T1410
 
 -- | This is @bindParser@ with the arguments flipped.
 -- It might be more helpful to use this function if you prefer this argument order.
