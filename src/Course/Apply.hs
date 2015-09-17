@@ -236,7 +236,6 @@ lift4 f x y z a = lift3 f x y z <*> a -- gdmcbain 2015-09-16T1427
   -> f b
   -> f b
 (*>) = lift2 (const id)         -- 2015-09-17T1058
---  error "todo: Course.Apply#(*>)"
 
 -- | Sequence, discarding the value of the second argument.
 -- Pronounced, left apply.
