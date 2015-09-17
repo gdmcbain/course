@@ -85,33 +85,50 @@ type FilePath =
 run ::
   Chars
   -> IO ()
-run =  --_undefined printFiles
--- getFiles :: List FilePath -> IO (List (FilePath, Chars))
--- (_undefined :: (List (FilePath, Chars) -> IO ()) -> Chars -> IO ()) printFiles --
-  error "todo: Course.FileIO#run"
+run toc =
+  {- readFile toc >>= (\f -> 
+     (getFiles . lines) f) >>= \c ->
+      printFiles c
+   -}
+
+  readFile toc >>= (getFiles . lines) >>= printFiles -- 2015-09-17T1023
+
+  {- do 
+      f <- readFile toc
+      c <- (getFiles . lines) f
+      printFiles c
+   -}
 
 getFiles ::
   List FilePath
   -> IO (List (FilePath, Chars))
-getFiles files =  -- _undefined files
-   error "todo: Course.FileIO#getFiles"
+-- getFiles fs = sequence (getFile <$> fs) -- 2015-09-17T1029
+getFiles = sequence . (getFile <$>) -- 2015-09-17T1032
+--   error "todo: Course.FileIO#getFiles"
 
 getFile ::
   FilePath
   -> IO (FilePath, Chars)
-getFile =
-  error "todo: Course.FileIO#getFile"
+-- getFile f =
+-- --  readFile f >>= \c -> pure (f, c) -- 2015-09-17T1035
+-- --  (\c -> (f, c)) <$> readFile f -- 2015-09-17T1041
+--   ((,) f) <$> readFile f -- 2015-09-17T1042
+getFile = lift2 (<$>) (,) readFile -- 2015-09-17T1044
 
 printFiles ::
   List (FilePath, Chars)
   -> IO ()
-printFiles =
-  error "todo: Course.FileIO#printFiles"
+--printFiles x = void $ sequence ((\(p, c) -> printFile p c) <$> x) -- 17T1051
+--printFiles x = void $ sequence (uncurry printFile <$> x) -- 17T1052
+printFiles = void . sequence . (<$>) (uncurry printFile) -- 17T1055
+ -- error "todo: Course.FileIO#printFiles"
 
 printFile ::
   FilePath
   -> Chars
   -> IO ()
-printFile =
-  error "todo: Course.FileIO#printFile"
+printFile fp c =
+  putStrLn ("The name of the file: " ++ fp) *>
+  putStrLn c
+--  error "todo: Course.FileIO#printFile"
 
