@@ -369,8 +369,7 @@ space = satisfy isSpace
 -- /Tip:/ Use the @list1@ and @space@ functions.
 spaces1 ::
   Parser Chars
-spaces1 =
-  error "todo: Course.Parser#spaces1"
+spaces1 = list1 space -- gdmcbain 2015-09-17T1507
 
 -- | Return a parser that produces a lower-case character but fails if
 --
