@@ -218,7 +218,7 @@ p >>> q = flbindParser p (const q) -- tmorris T1416
 P p ||| P q =                   -- gdmcbain 2015-09-17T1422
   P (\input -> case p input of
                 ErrorResult _ -> q input
-                r@(Results{}) -> r)
+                r@(Result{}) -> r)
 
 infixl 3 |||
 
@@ -246,8 +246,7 @@ infixl 3 |||
 list ::
   Parser a
   -> Parser (List a)
-list (P p) = 
-  error "todo: Course.Parser#list"
+list p = list1 p ||| valueParser Nil -- gdmcbain 2015-09-17T1433
 
 -- | Return a parser that produces at least one value from the given parser then
 -- continues producing a list of values from the given parser (to ultimately produce a non-empty list).
@@ -265,8 +264,12 @@ list (P p) =
 list1 ::
   Parser a
   -> Parser (List a)
-list1 =
-  error "todo: Course.Parser#list1"
+list1 p =
+  flbindParser p (\a ->
+  flbindParser (list p) (\b ->
+  valueParser (a:.b)))
+
+  {- could be done with do-notation -}
 
 -- | Return a parser that produces a character but fails if
 --
@@ -284,8 +287,9 @@ list1 =
 satisfy ::
   (Char -> Bool)
   -> Parser Char
-satisfy =
-  error "todo: Course.Parser#satisfy"
+satisfy predic =                -- tmorris 2015-09-17T1455
+  character  >>= \c ->
+  if predic c then valueParser c else unexpectedCharParser c
 
 -- | Return a parser that produces the given character but fails if
 --
@@ -616,16 +620,15 @@ instance Apply Parser where
     Parser (a -> b)
     -> Parser a
     -> Parser b
-  (<*>) =
-    error "todo: Course.Parser (<*>)#instance Parser"
+  (<*>) = error "todo: Course.Parser (<*>)#instance Parser"
+  
 
 -- | Write an Applicative functor instance for a @Parser@.
 instance Applicative Parser where
   pure ::
     a
     -> Parser a
-  pure =
-    error "todo: Course.Parser pure#instance Parser"
+  pure = valueParser            -- tmorris 2015-09-17T1445
 
 -- | Write a Bind instance for a @Parser@.
 instance Bind Parser where
@@ -633,7 +636,6 @@ instance Bind Parser where
     (a -> Parser b)
     -> Parser a
     -> Parser b
-  (=<<) =
-    error "todo: Course.Parser (=<<)#instance Parser"
+  (=<<) = bindParser            -- gdmcbain 2015-09-17T1455
 
 instance Monad Parser where
