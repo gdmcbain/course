@@ -563,12 +563,15 @@ phoneBodyParser = list (digit ||| is '.' ||| is '-') -- tmorris T1559
 -- True
 phoneParser ::
   Parser Chars
+  {-
 phoneParser = -- gdmcbain 2015-09-17T1600
   do d <- digit
      b <- phoneBodyParser
      -- _ <- is '#'
      is '#' -- tmorris T1601
      pure (d:.b)
+-}
+phoneParser = (:.) <$> digit <*> phoneBodyParser <* is '#' -- tmorris T1608
 
 -- | Write a parser for Person.
 --
@@ -626,14 +629,16 @@ personParser =
      sm <- smokerParser
      spaces1
      ph <- phoneParser
-     pure (Person {age = a,
-                   firstName = f,
-                   surname = sn,
-                   smoker = sm,
-                   phone = ph})
-                   
-                         
-     
+     pure $ Person a f sn sm ph
+
+personParserA :: Parser Person
+personParserA = -- gdmcbain 2015-09-17T1637
+  Person <$> ageParser <* spaces1
+  <*> firstNameParser <* spaces1
+  <*> surnameParser <* spaces1
+  <*> smokerParser <* spaces1
+  <*> phoneParser
+
 -- Make sure all the tests pass!
 
 
