@@ -99,8 +99,10 @@ failed = P (\_ -> ErrorResult Failed) -- gdmcbain 2015-09-17T1247
 -- True
 character ::
   Parser Char
-character =
-  error "todo: Course.Parser#character"
+character = P (
+  \input -> case input of
+             Nil -> ErrorResult UnexpectedEof
+             h:.t -> Result t h) -- gdmcbain 2015-09-17T1252
 
 -- | Return a parser that maps any succeeding result with the given function.
 --
