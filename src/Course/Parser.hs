@@ -79,17 +79,16 @@ unexpectedCharParser c =
 valueParser ::
   a
   -> Parser a
-valueParser =
-  error "todo: Course.Parser#valueParser"
-
+-- valueParser a = P (\_ -> Result _undefined) -- gdmcbain 2015-09-17T1234
+valueParser a = P (\input -> Result input a)
+--  error "todo: Course.Parser#valueParser"
 -- | Return a parser that always fails with the given error.
 --
 -- >>> isErrorResult (parse failed "abc")
 -- True
 failed ::
   Parser a
-failed =
-  error "todo: Course.Parser#failed"
+failed = P (\_ -> ErrorResult Failed) -- gdmcbain 2015-09-17T1247
 
 -- | Return a parser that succeeds with a character off the input or fails with an error if the input is empty.
 --
