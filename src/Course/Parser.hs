@@ -520,7 +520,8 @@ surnameParser =
 -- True
 smokerParser ::
   Parser Char
-smokerParser = is 'y' ||| is 'n' -- gdmcbain 2015-09-17TT1553
+smokerParser = -- is 'y' ||| is 'n' -- gdmcbain 2015-09-17TT1553
+  on (|||) is 'y' 'n' -- tmorris 1557
 
 -- | Write part of a parser for Person#phoneBody.
 -- This parser will only produce a string of digits, dots or hyphens.
@@ -541,8 +542,7 @@ smokerParser = is 'y' ||| is 'n' -- gdmcbain 2015-09-17TT1553
 -- Result >a123-456< ""
 phoneBodyParser ::
   Parser Chars
-phoneBodyParser =
-  error "todo: Course.Parser#phoneBodyParser"
+phoneBodyParser = list (digit ||| is '.' ||| is '-') -- tmorris T1559
 
 -- | Write a parser for Person.phone.
 --
@@ -563,8 +563,12 @@ phoneBodyParser =
 -- True
 phoneParser ::
   Parser Chars
-phoneParser =
-  error "todo: Course.Parser#phoneParser"
+phoneParser = -- gdmcbain 2015-09-17T1600
+  do d <- digit
+     b <- phoneBodyParser
+     -- _ <- is '#'
+     is '#' -- tmorris T1601
+     pure (d:.b)
 
 -- | Write a parser for Person.
 --
@@ -613,8 +617,23 @@ phoneParser =
 personParser ::
   Parser Person
 personParser =
-  error "todo: Course.Parser#personParser"
-
+  do a <- ageParser
+     spaces1
+     f <- firstNameParser
+     spaces1
+     sn <- surnameParser
+     spaces1
+     sm <- smokerParser
+     spaces1
+     ph <- phoneParser
+     pure (Person {age = a,
+                   firstName = f,
+                   surname = sn,
+                   smoker = sm,
+                   phone = ph})
+                   
+                         
+     
 -- Make sure all the tests pass!
 
 
