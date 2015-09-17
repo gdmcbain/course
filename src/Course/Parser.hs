@@ -215,10 +215,10 @@ p >>> q = flbindParser p (const q) -- tmorris T1416
   Parser a
   -> Parser a
   -> Parser a
-(P p) ||| (P q) =               -- gdmcbain 2015-09-17T1422
+P p ||| P q =                   -- gdmcbain 2015-09-17T1422
   P (\input -> case p input of
                 ErrorResult _ -> q input
-                Result i a -> Result i a)
+                r@(Results{}) -> r)
 
 infixl 3 |||
 
@@ -246,7 +246,7 @@ infixl 3 |||
 list ::
   Parser a
   -> Parser (List a)
-list =
+list (P p) = 
   error "todo: Course.Parser#list"
 
 -- | Return a parser that produces at least one value from the given parser then
