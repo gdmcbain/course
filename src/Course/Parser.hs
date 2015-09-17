@@ -115,11 +115,17 @@ mapParser ::
   (a -> b)
   -> Parser a
   -> Parser b
-mapParser f p = P (\input ->    -- gdmcbain 2015-09-17T1323
-                    case parse p input of
-                     ErrorResult pe -> ErrorResult pe
-                     Result residue x -> Result residue (f x))
-                
+-- mapParser f (P p) = P (\input ->    -- gdmcbain 2015-09-17T1323
+--                     case p input of
+--                      ErrorResult pe -> ErrorResult pe
+--                      Result residue x -> Result residue (f x))
+mapParser f (P p) = P (((<$>) f) . p) -- gdmcbain 2015-09-17T1402
+
+instance Functor ParseResult where -- tmorris 2015-09-17T1350
+  (<$>) :: (a -> b) -> ParseResult a -> ParseResult b
+  _ <$> ErrorResult e = ErrorResult e
+  f <$> Result i a = Result i (f a)
+
 -- | This is @mapParser@ with the arguments flipped.
 -- It might be more helpful to use this function if you prefer this argument order.
 flmapParser ::
@@ -154,6 +160,7 @@ bindParser ::
   (a -> Parser b)
   -> Parser a
   -> Parser b
+--bindParser f (P p) =
 bindParser =
   error "todo: Course.Parser#bindParser"
 
