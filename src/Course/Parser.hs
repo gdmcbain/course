@@ -380,8 +380,7 @@ spaces1 = list1 space -- gdmcbain 2015-09-17T1507
 -- /Tip:/ Use the @satisfy@ and @Data.Char#isLower@ functions.
 lower ::
   Parser Char
-lower =
-  error "todo: Course.Parser#lower"
+lower = satisfy isLower -- gdmcbain 2015-09-17T1508
 
 -- | Return a parser that produces an upper-case character but fails if
 --
