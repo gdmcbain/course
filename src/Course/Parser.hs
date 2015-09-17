@@ -402,8 +402,7 @@ upper = satisfy isUpper -- gdmcbain 2015-09-17T1509
 -- /Tip:/ Use the @satisfy@ and @Data.Char#isAlpha@ functions.
 alpha ::
   Parser Char
-alpha =
-  error "todo: Course.Parser#alpha"
+alpha = satisfy isAlpha -- gdmcbain 2015-09-17T1509
 
 -- | Return a parser that sequences the given list of parsers by producing all their results
 -- but fails on the first failing parser of the list.
@@ -419,8 +418,7 @@ alpha =
 sequenceParser ::
   List (Parser a)
   -> Parser (List a)
-sequenceParser =
-  error "todo: Course.Parser#sequenceParser"
+sequenceParser = sequence
 
 -- | Return a parser that produces the given number of values off the given parser.
 -- This parser fails if the given parser fails in the attempt to produce the given number of values.
@@ -436,8 +434,7 @@ thisMany ::
   Int
   -> Parser a
   -> Parser (List a)
-thisMany =
-  error "todo: Course.Parser#thisMany"
+thisMany n p = sequenceParser $ replicate n p
 
 -- | Write a parser for Person.age.
 --
@@ -614,8 +611,7 @@ instance Functor Parser where
     (a -> b)
     -> Parser a
     -> Parser b
-  (<$>) =
-     error "todo: Course.Parser (<$>)#instance Parser"
+  (<$>) = mapParser -- gdmcbain 2015-09-17T1519
 
 -- | Write a Apply instance for a @Parser@.
 -- /Tip:/ Use @bindParser@ and @valueParser@.
@@ -624,8 +620,10 @@ instance Apply Parser where
     Parser (a -> b)
     -> Parser a
     -> Parser b
-  (<*>) = error "todo: Course.Parser (<*>)#instance Parser"
-  
+  f <*> a = -- tmorris 2015-09-17T158
+    do f' <- f
+       a' <- a
+       pure (f' a')
 
 -- | Write an Applicative functor instance for a @Parser@.
 instance Applicative Parser where
